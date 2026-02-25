@@ -1,15 +1,148 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WIDAP — Moda Urbana</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 </head>
 <body>
-    <h1>Estoy aprendiendo GitHub 123456</h1>
 
-    <script src="main.js"></script>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-logo">WIDAP</div>
+    <nav class="nav-links">
+      <a href="#productos">Colección</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <button class="cart-btn" id="cartBtn" aria-label="Carrito">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-circle c1"></div>
+      <div class="hero-circle c2"></div>
+      <div class="hero-circle c3"></div>
+    </div>
+    <div class="hero-content">
+      <span class="hero-tag">Nueva Colección 2026</span>
+      <h1 class="hero-title">VISTE<br/>SIN<br/>LÍMITES</h1>
+      <p class="hero-sub">Polos urbanos de alta calidad para tu estilo de vida.</p>
+      <a href="#productos" class="btn-hero">Ver colección</a>
+    </div>
+    <div class="hero-img-wrap">
+      <div class="hero-img-placeholder">
+        <div class="shirt-mockup">
+          <div class="shirt-body"></div>
+          <div class="shirt-sleeve left"></div>
+          <div class="shirt-sleeve right"></div>
+          <div class="shirt-collar"></div>
+          <span class="shirt-label">widap</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORÍAS -->
+  <section class="categories">
+    <button class="cat-btn active" data-cat="todos">Todos</button>
+    <button class="cat-btn" data-cat="basico">Básicos</button>
+    <button class="cat-btn" data-cat="grafico">Gráficos</button>
+    <button class="cat-btn" data-cat="oversize">Oversize</button>
+    <button class="cat-btn" data-cat="premium">Premium</button>
+  </section>
+
+  <!-- PRODUCTOS -->
+  <section class="productos" id="productos">
+    <h2 class="section-title">Colección</h2>
+    <div class="products-grid" id="productsGrid">
+      <!-- Generado por JS -->
+    </div>
+  </section>
+
+  <!-- NOSOTROS -->
+  <section class="nosotros" id="nosotros">
+    <div class="nosotros-inner">
+      <div class="nosotros-text">
+        <span class="label-tag">¿Por qué WIDAP?</span>
+        <h2>Calidad que <br/>se siente.</h2>
+        <p>Cada polo WIDAP está confeccionado con algodón pima peruano 100%, diseñado para durar y mantenerte cómodo todo el día.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feat"><div class="feat-icon">🧵</div><h4>Algodón Pima</h4><p>La fibra más fina del Perú</p></div>
+        <div class="feat"><div class="feat-icon">✂️</div><h4>Corte Premium</h4><p>Sastrería de primera</p></div>
+        <div class="feat"><div class="feat-icon">🎨</div><h4>Colores Duraderos</h4><p>Tintura de alta fijación</p></div>
+        <div class="feat"><div class="feat-icon">🚚</div><h4>Envío Rápido</h4><p>24-48 horas a todo el país</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contacto">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">WIDAP</span>
+        <p>Moda urbana peruana de calidad.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Links</h4>
+        <a href="#">Política de privacidad</a>
+        <a href="#">Términos y condiciones</a>
+        <a href="#">Preguntas frecuentes</a>
+      </div>
+      <div class="footer-contact">
+        <h4>Contacto</h4>
+        <p>contacto@widap.pe</p>
+        <p>+51 944 110 641</p>
+        <div class="socials">
+          <a href="#">IG</a>
+          <a href="#">FB</a>
+          <a href="#">TK</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 WIDAP. Todos los derechos reservados.</div>
+  </footer>
+
+  <!-- CARRITO SIDEBAR -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <h3>Tu Carrito</h3>
+      <button class="close-cart" id="closeCart">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">
+        <div class="empty-icon">🛒</div>
+        <p>Tu carrito está vacío</p>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span class="total-price" id="totalPrice">S/ 0.00</span>
+      </div>
+      <button class="btn-checkout" id="checkoutBtn">Proceder al pago</button>
+    </div>
+  </aside>
+
+  <!-- MODAL PRODUCTO -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="product-modal" id="productModal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="main.js"></script>
 </body>
 </html>
-
