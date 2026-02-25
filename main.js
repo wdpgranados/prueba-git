@@ -1,10 +1,10 @@
 // ===========================
-//   POLOX — main.js
-//   Lógica de tienda + carrito
+//   WIDAP — main.js
+//   Tienda de polos urbanos
 // ===========================
 
 // ──────────────────────────────
-// DATOS DE PRODUCTOS
+// PRODUCTOS CON IMÁGENES REALES
 // ──────────────────────────────
 const PRODUCTS = [
   {
@@ -12,101 +12,92 @@ const PRODUCTS = [
     name: "Classic White",
     category: "basico",
     price: 59.90,
-    emoji: "👕",
-    bg: "#f0ede6",
+    imagen: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80",
     badge: null,
-    description: "El básico que nunca falla. Algodón pima 180g, corte regular. Ideal para cualquier ocasión.",
-    sizes: ["XS","S","M","L","XL","XXL"]
+    description: "El básico que nunca falla. Algodón pima 180g, corte regular perfecto para cualquier ocasión."
   },
   {
     id: 2,
     name: "Urban Black",
     category: "grafico",
     price: 79.90,
-    emoji: "🖤",
-    bg: "#1a1a1a",
+    imagen: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?w=600&q=80",
     badge: "Nuevo",
-    description: "Diseño gráfico exclusivo en técnica serigrafía. Estilo urbano que hace hablar.",
-    sizes: ["S","M","L","XL"]
+    description: "Diseño gráfico exclusivo en serigrafía. Estilo urbano que hace hablar donde vayas."
   },
   {
     id: 3,
     name: "Oversized Drop",
     category: "oversize",
     price: 89.90,
-    emoji: "🛹",
-    bg: "#1e2a3a",
+    imagen: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=600&q=80",
     badge: "Top",
-    description: "Corte oversize con hombros caídos. Tendencia actual para un look relajado y cómodo.",
-    sizes: ["S/M","L/XL","XXL"]
+    description: "Corte oversize con hombros caídos. Tendencia actual para un look relajado y cómodo."
   },
   {
     id: 4,
-    name: "Sunset Graphic",
+    name: "Vintage Wash",
     category: "grafico",
     price: 75.90,
-    emoji: "🌅",
-    bg: "#3a1e1e",
+    imagen: "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=600&q=80",
     badge: null,
-    description: "Print full-color de alta resolución. Tela 100% algodón peinado, suave al tacto.",
-    sizes: ["XS","S","M","L","XL"]
+    description: "Lavado enzimático para un efecto vintage auténtico. Cada pieza es única e irrepetible."
   },
   {
     id: 5,
     name: "Pima Premium",
     category: "premium",
     price: 129.90,
-    emoji: "✨",
-    bg: "#1a2a1e",
+    imagen: "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?w=600&q=80",
     badge: "Premium",
-    description: "La joya de nuestra colección. Algodón pima extra-largo, certificado, tejido de punto.",
-    sizes: ["S","M","L","XL","XXL"]
+    description: "La joya de nuestra colección. Algodón pima extra-largo certificado, tejido de punto compacto."
   },
   {
     id: 6,
-    name: "Sage Basic",
+    name: "Sage Minimal",
     category: "basico",
     price: 59.90,
-    emoji: "🌿",
-    bg: "#1e2a1e",
+    imagen: "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=600&q=80",
     badge: null,
-    description: "Básico en tono sage verde. Versátil, cómodo y de larga durabilidad.",
-    sizes: ["XS","S","M","L","XL","XXL"]
+    description: "Tono sage verde tendencia. Básico versátil con acabado suave al tacto y larga durabilidad."
   },
   {
     id: 7,
-    name: "Street Art",
+    name: "Street Art Collab",
     category: "grafico",
     price: 85.90,
-    emoji: "🎨",
-    bg: "#2a1e3a",
+    imagen: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80",
     badge: "Nuevo",
-    description: "Colaboración con artistas locales. Arte callejero impreso en alta calidad.",
-    sizes: ["S","M","L","XL"]
+    description: "Colaboración con artistas locales peruanos. Arte callejero impreso en alta resolución."
   },
   {
     id: 8,
-    name: "Box Oversize",
+    name: "Box Fit Heavy",
     category: "oversize",
     price: 95.90,
-    emoji: "📦",
-    bg: "#2a2a1e",
+    imagen: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600&q=80",
     badge: null,
-    description: "Estilo box-fit con caída perfecta. El oversize más llevado de la temporada.",
-    sizes: ["S/M","L/XL","XXL"]
+    description: "Estilo box-fit en tela french terry 280g. El oversize más llevado de la temporada."
   }
 ];
+
+const SIZES = {
+  basico:   ["XS", "S", "M", "L", "XL", "XXL"],
+  grafico:  ["S", "M", "L", "XL"],
+  oversize: ["S/M", "L/XL", "XXL"],
+  premium:  ["S", "M", "L", "XL", "XXL"]
+};
 
 // ──────────────────────────────
 // ESTADO
 // ──────────────────────────────
-let cart = JSON.parse(localStorage.getItem('polox_cart') || '[]');
+let cart = JSON.parse(localStorage.getItem('widap_cart') || '[]');
 let currentCategory = 'todos';
 let selectedSize = null;
 let openProductId = null;
 
 // ──────────────────────────────
-// REFERENCIAS DOM
+// DOM REFS
 // ──────────────────────────────
 const productsGrid  = document.getElementById('productsGrid');
 const cartCount     = document.getElementById('cartCount');
@@ -123,6 +114,7 @@ const modalClose    = document.getElementById('modalClose');
 const modalBody     = document.getElementById('modalBody');
 const toastEl       = document.getElementById('toast');
 const catBtns       = document.querySelectorAll('.cat-btn');
+const navbar        = document.getElementById('navbar');
 
 // ──────────────────────────────
 // RENDER PRODUCTOS
@@ -137,11 +129,17 @@ function renderProducts() {
   filtered.forEach((product, index) => {
     const card = document.createElement('div');
     card.className = 'product-card';
-    card.style.animationDelay = `${index * 0.07}s`;
+    card.style.animationDelay = `${index * 0.08}s`;
+
     card.innerHTML = `
-      <div class="card-img" style="background:${product.bg}">
+      <div class="card-img">
         ${product.badge ? `<span class="card-badge">${product.badge}</span>` : ''}
-        <span style="font-size:4.5rem;user-select:none">${product.emoji}</span>
+        <img 
+          src="${product.imagen}" 
+          alt="${product.name}"
+          loading="lazy"
+          onerror="this.style.display='none'"
+        />
       </div>
       <div class="card-body">
         <div class="card-cat">${categoryLabel(product.category)}</div>
@@ -149,21 +147,23 @@ function renderProducts() {
         <div class="card-footer">
           <span class="card-price">S/ ${product.price.toFixed(2)}</span>
           <button class="btn-add" data-id="${product.id}" aria-label="Agregar al carrito">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
           </button>
         </div>
       </div>
     `;
 
-    // Click en la imagen → abrir modal
+    // Click en imagen o nombre → modal
     card.querySelector('.card-img').addEventListener('click', () => openModal(product.id));
     card.querySelector('.card-name').addEventListener('click', () => openModal(product.id));
-    card.querySelector('.card-cat').addEventListener('click', () => openModal(product.id));
 
-    // Click en "+" → agrega con primer size
+    // Click en "+" → agregar con talla por defecto
     card.querySelector('.btn-add').addEventListener('click', (e) => {
       e.stopPropagation();
-      addToCart(product.id, product.sizes[0]);
+      const sizes = SIZES[product.category];
+      addToCart(product.id, sizes[Math.floor(sizes.length / 2)]);
     });
 
     productsGrid.appendChild(card);
@@ -171,7 +171,7 @@ function renderProducts() {
 }
 
 function categoryLabel(cat) {
-  const map = { basico:'Básicos', grafico:'Gráficos', oversize:'Oversize', premium:'Premium' };
+  const map = { basico: 'Básicos', grafico: 'Gráficos', oversize: 'Oversize', premium: 'Premium' };
   return map[cat] || cat;
 }
 
@@ -188,27 +188,29 @@ catBtns.forEach(btn => {
 });
 
 // ──────────────────────────────
-// MODAL PRODUCTO
+// MODAL DETALLE
 // ──────────────────────────────
 function openModal(productId) {
   const product = PRODUCTS.find(p => p.id === productId);
   if (!product) return;
+
   openProductId = productId;
-  selectedSize = product.sizes[0];
+  const sizes = SIZES[product.category];
+  selectedSize = sizes[0];
 
   modalBody.innerHTML = `
-    <div class="modal-img" style="background:${product.bg}">
-      <span>${product.emoji}</span>
+    <div class="modal-img">
+      <img src="${product.imagen}" alt="${product.name}" />
     </div>
     <div class="modal-info">
       <div class="modal-cat">${categoryLabel(product.category)}</div>
       <div class="modal-name">${product.name}</div>
       <div class="modal-price">S/ ${product.price.toFixed(2)}</div>
       <p class="modal-desc">${product.description}</p>
-      <div class="size-label">Talla</div>
+      <div class="size-label">Selecciona tu talla</div>
       <div class="size-options" id="sizeOptions">
-        ${product.sizes.map(s => `
-          <button class="size-btn${s === selectedSize ? ' selected' : ''}" data-size="${s}">${s}</button>
+        ${sizes.map(s => `
+          <button class="size-btn ${s === selectedSize ? 'selected' : ''}" data-size="${s}">${s}</button>
         `).join('')}
       </div>
       <button class="modal-add-btn" id="modalAddBtn">
@@ -217,7 +219,6 @@ function openModal(productId) {
     </div>
   `;
 
-  // Selección de talla
   document.querySelectorAll('.size-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
@@ -228,27 +229,25 @@ function openModal(productId) {
 
   document.getElementById('modalAddBtn').addEventListener('click', () => {
     addToCart(openProductId, selectedSize);
-    closeModal();
+    closeModalFn();
   });
 
   modalOverlay.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
-function closeModal() {
+function closeModalFn() {
   modalOverlay.classList.remove('active');
   document.body.style.overflow = '';
   openProductId = null;
   selectedSize = null;
 }
 
-modalClose.addEventListener('click', closeModal);
-modalOverlay.addEventListener('click', (e) => {
-  if (e.target === modalOverlay) closeModal();
-});
+modalClose.addEventListener('click', closeModalFn);
+modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModalFn(); });
 
 // ──────────────────────────────
-// CARRITO
+// CARRITO — LÓGICA
 // ──────────────────────────────
 function addToCart(productId, size) {
   const product = PRODUCTS.find(p => p.id === productId);
@@ -265,7 +264,7 @@ function addToCart(productId, size) {
       productId,
       name: product.name,
       price: product.price,
-      emoji: product.emoji,
+      imagen: product.imagen,
       size,
       qty: 1
     });
@@ -276,56 +275,52 @@ function addToCart(productId, size) {
   showToast(`✅ ${product.name} — Talla ${size} agregado`);
 }
 
-function removeFromCart(key) {
-  cart = cart.filter(i => i.key !== key);
-  saveCart();
-  updateCartUI();
-}
-
 function changeQty(key, delta) {
   const item = cart.find(i => i.key === key);
   if (!item) return;
   item.qty += delta;
-  if (item.qty <= 0) removeFromCart(key);
-  else {
-    saveCart();
-    updateCartUI();
+  if (item.qty <= 0) {
+    cart = cart.filter(i => i.key !== key);
   }
+  saveCart();
+  updateCartUI();
 }
 
 function saveCart() {
-  localStorage.setItem('polox_cart', JSON.stringify(cart));
+  localStorage.setItem('widap_cart', JSON.stringify(cart));
 }
 
 function getTotalItems() {
-  return cart.reduce((sum, i) => sum + i.qty, 0);
+  return cart.reduce((s, i) => s + i.qty, 0);
 }
 
 function getTotalPrice() {
-  return cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+  return cart.reduce((s, i) => s + i.price * i.qty, 0);
 }
 
 function updateCartUI() {
+  // Badge
   const total = getTotalItems();
-
-  // Counter badge
   cartCount.textContent = total;
   cartCount.classList.add('bump');
   setTimeout(() => cartCount.classList.remove('bump'), 300);
 
-  // Items en sidebar
+  // Items
   if (cart.length === 0) {
-    cartEmpty.style.display = 'block';
     cartItemsEl.innerHTML = '';
     cartItemsEl.appendChild(cartEmpty);
+    cartEmpty.style.display = 'block';
   } else {
     cartEmpty.style.display = 'none';
     cartItemsEl.innerHTML = '';
+
     cart.forEach(item => {
       const el = document.createElement('div');
       el.className = 'cart-item';
       el.innerHTML = `
-        <div class="item-emoji">${item.emoji}</div>
+        <div class="item-img">
+          <img src="${item.imagen}" alt="${item.name}" />
+        </div>
         <div class="item-info">
           <div class="item-name">${item.name}</div>
           <div class="item-size">Talla: ${item.size}</div>
@@ -340,7 +335,6 @@ function updateCartUI() {
       cartItemsEl.appendChild(el);
     });
 
-    // Event delegation
     cartItemsEl.querySelectorAll('.qty-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         changeQty(btn.dataset.key, parseInt(btn.dataset.delta));
@@ -348,7 +342,6 @@ function updateCartUI() {
     });
   }
 
-  // Total precio
   totalPriceEl.textContent = `S/ ${getTotalPrice().toFixed(2)}`;
 }
 
@@ -372,7 +365,7 @@ closeCart.addEventListener('click', closeCartSidebar);
 cartOverlay.addEventListener('click', closeCartSidebar);
 
 // ──────────────────────────────
-// CHECKOUT (simulado)
+// CHECKOUT
 // ──────────────────────────────
 checkoutBtn.addEventListener('click', () => {
   if (cart.length === 0) {
@@ -388,10 +381,9 @@ checkoutBtn.addEventListener('click', () => {
 });
 
 // ──────────────────────────────
-// TOAST NOTIFICATION
+// TOAST
 // ──────────────────────────────
 let toastTimeout;
-
 function showToast(msg) {
   clearTimeout(toastTimeout);
   toastEl.textContent = msg;
@@ -400,14 +392,23 @@ function showToast(msg) {
 }
 
 // ──────────────────────────────
-// NAVBAR SCROLL EFFECT
+// NAVBAR SCROLL
 // ──────────────────────────────
 window.addEventListener('scroll', () => {
-  const navbar = document.querySelector('.navbar');
-  if (window.scrollY > 50) {
-    navbar.style.padding = '0.6rem 3rem';
+  if (window.scrollY > 60) {
+    navbar.classList.add('scrolled');
   } else {
-    navbar.style.padding = '1rem 3rem';
+    navbar.classList.remove('scrolled');
+  }
+});
+
+// ──────────────────────────────
+// KEYBOARD CLOSE
+// ──────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModalFn();
+    closeCartSidebar();
   }
 });
 
